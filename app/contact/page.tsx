@@ -1,22 +1,32 @@
 "use client";
-import Link from "next/link";
-import { useRouter } from "next/router";
+import { useState } from "react";
 
 export default function Contact() {
-  const router = useRouter();
+  const [email, setEmail] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await fetch("/api/contact", {
+      method: "POST",
+      body: JSON.stringify({ email }),
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+  };
+
   return (
     <div>
-      <h1>contact</h1>
-      <Link href="/">home</Link>
-      <Link href={`/blog/yourslugidhere`}>post</Link>
-      {/* Programmatic routing */}
-      <button onClick={() => router.push('/')}>home</button>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <button type="submit">Submit</button>
+      </form>
     </div>
   );
 }
-
-
-// Next uses server components by default
-// The useRouter hook allows for a router function that essentially uses window.location
-// So to utilize this, the component must feature the 'use client' directive/pragma making it a client component
-// Otherwise, the server component has no concept of the window/DOM

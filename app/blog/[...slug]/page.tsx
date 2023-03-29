@@ -1,5 +1,3 @@
-export default function BlogPost () {
-  return (
-    <div>post</div>
-  )
+export default async function BlogPost() {
+  return <div>post</div>;
 }
